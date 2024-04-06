@@ -20,7 +20,7 @@ def load_data(path):
     for i in range(1,6):
         images, labels = load_cifar10_batch(os.path.join(path, f'data_batch_{i}'))
         x_train[(i-1) * 10000: i*10000, :, :,:] = images
-        y_train[(i-1) * 10000: i*10000, :, :,:] = labels
+        y_train[(i-1) * 10000: i*10000] = labels
     
     x_test, y_test = load_cifar10_batch(os.path.join(path, 'test_batch'))
 
