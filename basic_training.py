@@ -34,3 +34,39 @@ path_to_dataset = '/data/cifar-10-batches-py'
 train_images, test_images = train_images / 255.0, test_images / 255.0
 train_labels = tf.keras.utils.to_categorical(train_labels, 10)
 test_labels = tf.keras.utils.to_categorical(test_labels, 10)
+
+
+## Training part
+
+base_model = tf.keras.applications.ResNet50(weights=None, include_top=False, input_shape=(32, 32, 3))
+
+# Create the model
+model = models.Sequential()
+model.add(base_model)
+model.add(layers.GlobalAveragePooling2D())
+model.add(layers.Dense(10, activation='softmax'))  # CIFAR-10 has 10 classes
+
+
+# Compile the model
+model.compile(optimizer='adam',
+              loss='categorical_crossentropy',
+              metrics=['accuracy'])
+
+# Model summary
+model.summary()
+
+# Data Augmentation
+data_augmentation = preprocessing.image.ImageDataGenerator(
+    rotation_range=20,
+    width_shift_range=0.2,
+    height_shift_range=0.2,
+    horizontal_flip=True)
+
+# Fit the model
+batch_size = 64
+epochs = 10  # For simplicity, but you may need more epochs for higher accuracy
+
+model.fit(data_augmentation.flow(train_images, train_labels, batch_size=batch_size),
+          steps_per_epoch=len(train_images) // batch_size,
+          epochs=epochs,
+          validation_data=(test_images, test_labels))
