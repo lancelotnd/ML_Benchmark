@@ -28,7 +28,7 @@ def load_data(path):
 
 
 
-path_to_dataset = '/data/cifar-10-batches-bin'
+path_to_dataset = '/data/cifar-10-batches-py'
 
 (train_images, train_labels), (test_images, test_labels) = load_data(path_to_dataset)
 train_images, test_images = train_images / 255.0, test_images / 255.0
