@@ -64,7 +64,7 @@ data_augmentation = preprocessing.image.ImageDataGenerator(
 
 # Fit the model
 batch_size = 64
-epochs = 10  # For simplicity, but you may need more epochs for higher accuracy
+epochs = 30
 
 model.fit(data_augmentation.flow(train_images, train_labels, batch_size=batch_size),
           steps_per_epoch=len(train_images) // batch_size,
