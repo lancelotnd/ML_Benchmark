@@ -43,8 +43,8 @@ train_dataset = encode_examples(train_df, tokenizer)
 valid_dataset = encode_examples(dev_df, tokenizer)
 
 # Prepare the datasets for training
-train_dataset = train_dataset.shuffle(100).batch(32).repeat(-1)
-valid_dataset = valid_dataset.batch(64)
+train_dataset = train_dataset.shuffle(100).batch(16).repeat(-1)
+valid_dataset = valid_dataset.batch(32)
 
 # (The rest of the training code remains the same)
 # Load a pre-trained BERT model for sequence classification
@@ -59,10 +59,10 @@ model.compile(optimizer=optimizer, loss=loss, metrics=[metric])
 # Training
 
 num_train_examples = len(train_df)
-batch_size = 32
+batch_size = 16
 steps_per_epoch = num_train_examples // batch_size
 
 epochs = 3
-valid_steps = len(valid_dataset) // 64
+valid_steps = len(valid_dataset) // 32
 
 model.fit(train_dataset, epochs=epochs, steps_per_epoch=steps_per_epoch, validation_data=valid_dataset, validation_steps=valid_steps)
