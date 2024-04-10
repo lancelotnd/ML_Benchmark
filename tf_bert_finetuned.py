@@ -57,8 +57,12 @@ metric = tf.keras.metrics.SparseCategoricalAccuracy('accuracy')
 model.compile(optimizer=optimizer, loss=loss, metrics=[metric])
 
 # Training
+
+num_train_examples = len(train_df)
+batch_size = 32
+steps_per_epoch = num_train_examples // batch_size
+
 epochs = 3
-train_steps = len(train_dataset) // 32
 valid_steps = len(valid_dataset) // 64
 
-model.fit(train_dataset, epochs=epochs, steps_per_epoch=train_steps, validation_data=valid_dataset, validation_steps=valid_steps)
+model.fit(train_dataset, epochs=epochs, steps_per_epoch=steps_per_epoch, validation_data=valid_dataset, validation_steps=valid_steps)
