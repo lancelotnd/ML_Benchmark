@@ -6,7 +6,7 @@ from transformers import glue_convert_examples_to_features
 
 def load_dataset(file_path):
     # Assuming the file is in TSV format with columns [label, sentence1, sentence2]
-    df = pd.read_csv(file_path, delimiter='\t', encoding='utf-8', error_bad_lines=False)
+    df = pd.read_csv(file_path, delimiter='\t', encoding='utf-8', on_bad_lines='skip')
     return df
 
 def encode_examples(df, tokenizer, max_length=128):
