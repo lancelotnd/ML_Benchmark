@@ -7,7 +7,7 @@ rm cifar-10-python.tar.gz
 RUN virtualenv env
 RUN source env/bin/activate && \
 python -m pip install --upgrade pip && \
-python -m pip install tensorflow==2.11.0 scipy 
+python -m pip install tensorflow==2.11.0 scipy pycuda GPUtil psutil
 RUN git clone https://github.com/lancelotnd/ML_Benchmark.git
 
 
