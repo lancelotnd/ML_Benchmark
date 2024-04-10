@@ -9,5 +9,6 @@ RUN source env/bin/activate && \
 python -m pip install --upgrade pip && \
 python -m pip install tensorflow==2.11.0 scipy pycuda GPUtil psutil
 RUN git clone https://github.com/lancelotnd/ML_Benchmark.git
+RUN cp ML_Benchmark/data/* /data/
 
 

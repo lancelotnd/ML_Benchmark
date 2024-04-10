@@ -27,7 +27,7 @@ def load_data(path):
     return (x_train, y_train), (x_test, y_test)
 
 
-def train_cifar(use_all_gpus=False):
+def train_cifar(epochs=10, batch_size=64, use_all_gpus=False):
 
     if use_all_gpus:
         print("Num GPUs Available: ", len(tf.config.experimental.list_physical_devices('GPU')))
@@ -71,10 +71,6 @@ def train_cifar(use_all_gpus=False):
         width_shift_range=0.2,
         height_shift_range=0.2,
         horizontal_flip=True)
-
-    # Fit the model
-    batch_size = 64
-    epochs = 5
 
     model.fit(data_augmentation.flow(train_images, train_labels, batch_size=batch_size),
             steps_per_epoch=len(train_images) // batch_size,
