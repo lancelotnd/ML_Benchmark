@@ -1,4 +1,9 @@
 FROM tensorflow/tensorflow:devel-gpu
+RUN mkdir data
+RUN cd /data && \
+wget https://www.cs.toronto.edu/~kriz/cifar-10-python.tar.gz && \
+tar -xvf cifar-10-python.tar.gz && \
+rm cifar-10-python.tar.gz
 RUN virtualenv env
 RUN source env/bin/activate && \
 python -m pip install --upgrade pip && \
