@@ -7,7 +7,9 @@ parser = argparse.ArgumentParser(
 
 
 def main():
-    train_cifar()
+    train_cifar(use_all_gpus=False)
+    print("Trying distributed strategy")
+    train_cifar(use_all_gpus=True)
 
 
 if __name__ == "__main__":

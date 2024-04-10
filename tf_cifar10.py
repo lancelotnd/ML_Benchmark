@@ -27,8 +27,17 @@ def load_data(path):
     return (x_train, y_train), (x_test, y_test)
 
 
+def train_cifar(use_all_gpus=False):
 
-def train_cifar():
+    if use_all_gpus:
+        print("Num GPUs Available: ", len(tf.config.experimental.list_physical_devices('GPU')))
+        strategy = tf.distribute.MirroredStrategy()
+        print('Number of devices: {}'.format(strategy.num_replicas_in_sync))
+    else:
+        strategy = tf.distribute.get_strategy()
+
+
+
     path_to_dataset = '/data/cifar-10-batches-py'
     (train_images, train_labels), (test_images, test_labels) = load_data(path_to_dataset)
     train_images, test_images = train_images / 255.0, test_images / 255.0
@@ -36,24 +45,25 @@ def train_cifar():
     test_labels = tf.keras.utils.to_categorical(test_labels, 10)
 
 
-    ## Training part
 
-    base_model = tf.keras.applications.ResNet50(weights=None, include_top=False, input_shape=(32, 32, 3))
+    with strategy.scope():
+        ## Training part
+        base_model = tf.keras.applications.ResNet50(weights=None, include_top=False, input_shape=(32, 32, 3))
 
-    # Create the model
-    model = models.Sequential()
-    model.add(base_model)
-    model.add(layers.GlobalAveragePooling2D())
-    model.add(layers.Dense(10, activation='softmax'))  # CIFAR-10 has 10 classes
+        # Create the model
+        model = models.Sequential()
+        model.add(base_model)
+        model.add(layers.GlobalAveragePooling2D())
+        model.add(layers.Dense(10, activation='softmax'))  # CIFAR-10 has 10 classes
 
 
-    # Compile the model
-    model.compile(optimizer='adam',
-                loss='categorical_crossentropy',
-                metrics=['accuracy'])
+        # Compile the model
+        model.compile(optimizer='adam',
+                    loss='categorical_crossentropy',
+                    metrics=['accuracy'])
 
-    # Model summary
-    model.summary()
+        # Model summary
+        model.summary()
 
     # Data Augmentation
     data_augmentation = preprocessing.image.ImageDataGenerator(
@@ -64,9 +74,10 @@ def train_cifar():
 
     # Fit the model
     batch_size = 64
-    epochs = 30
+    epochs = 5
 
     model.fit(data_augmentation.flow(train_images, train_labels, batch_size=batch_size),
             steps_per_epoch=len(train_images) // batch_size,
             epochs=epochs,
             validation_data=(test_images, test_labels))
+    
