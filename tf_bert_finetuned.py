@@ -43,15 +43,15 @@ train_dataset = encode_examples(train_df, tokenizer)
 valid_dataset = encode_examples(dev_df, tokenizer)
 
 # Prepare the datasets for training
-train_dataset = train_dataset.shuffle(100).batch(16).repeat(-1)
+train_dataset = train_dataset.shuffle(100).batch(8).repeat(-1)
 valid_dataset = valid_dataset.batch(32)
 
 # (The rest of the training code remains the same)
 # Load a pre-trained BERT model for sequence classification
-model = TFBertForSequenceClassification.from_pretrained('bert-base-cased')
+model = TFBertForSequenceClassification.from_pretrained('bert-base-uncased')
 
 # Compile the model
-optimizer = tf.keras.optimizers.Adam(learning_rate=3e-5)
+optimizer = tf.keras.optimizers.Adam(learning_rate=2e-5)
 loss = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True)
 metric = tf.keras.metrics.SparseCategoricalAccuracy('accuracy')
 model.compile(optimizer=optimizer, loss=loss, metrics=[metric])
@@ -59,7 +59,7 @@ model.compile(optimizer=optimizer, loss=loss, metrics=[metric])
 # Training
 
 num_train_examples = len(train_df)
-batch_size = 16
+batch_size = 8
 steps_per_epoch = num_train_examples // batch_size
 
 epochs = 3
