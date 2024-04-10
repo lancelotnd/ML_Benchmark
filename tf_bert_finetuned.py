@@ -17,7 +17,7 @@ def encode_examples(df, tokenizer, max_length=128):
     
     for _, row in df.iterrows():
         sentence1, sentence2, label = row['sentence1'], row['sentence2'], row['label']
-        encoded_dict = tokenizer.encode_plus(sentence1, sentence2, max_length=max_length, pad_to_max_length=True, truncation=True, return_tensors='tf')
+        encoded_dict = tokenizer.encode_plus(sentence1, sentence2, max_length=max_length, pad_to_max_length=True, truncation=True, return_tensors='tf', return_overflowing_tokens=True)
         
         input_ids.append(encoded_dict['input_ids'])
         token_type_ids.append(encoded_dict['token_type_ids'])
