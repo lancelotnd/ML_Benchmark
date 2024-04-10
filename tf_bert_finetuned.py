@@ -47,3 +47,18 @@ train_dataset = train_dataset.shuffle(100).batch(32).repeat(-1)
 valid_dataset = valid_dataset.batch(64)
 
 # (The rest of the training code remains the same)
+# Load a pre-trained BERT model for sequence classification
+model = TFBertForSequenceClassification.from_pretrained('bert-base-uncased')
+
+# Compile the model
+optimizer = tf.keras.optimizers.Adam(learning_rate=3e-5)
+loss = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True)
+metric = tf.keras.metrics.SparseCategoricalAccuracy('accuracy')
+model.compile(optimizer=optimizer, loss=loss, metrics=[metric])
+
+# Training
+epochs = 3
+train_steps = len(train_dataset) // 32
+valid_steps = len(valid_dataset) // 64
+
+model.fit(train_dataset, epochs=epochs, steps_per_epoch=train_steps, validation_data=valid_dataset, validation_steps=valid_steps)
