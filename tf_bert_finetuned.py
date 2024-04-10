@@ -48,7 +48,7 @@ valid_dataset = valid_dataset.batch(32)
 
 # (The rest of the training code remains the same)
 # Load a pre-trained BERT model for sequence classification
-model = TFBertForSequenceClassification.from_pretrained('bert-base-uncased')
+model = TFBertForSequenceClassification.from_pretrained('bert-base-cased')
 
 # Compile the model
 optimizer = tf.keras.optimizers.Adam(learning_rate=3e-5)
