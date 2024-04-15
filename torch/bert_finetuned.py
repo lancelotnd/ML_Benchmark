@@ -28,7 +28,7 @@ def train(rank, world_size):
     train_dataset.set_format(type='torch', columns=['input_ids', 'attention_mask', 'label'])
 
     # DataLoader
-    train_loader = DataLoader(train_dataset, batch_size=16, shuffle=True)
+    train_loader = DataLoader(train_dataset, batch_size=8, shuffle=True)
 
     # Optimizer
     optimizer = AdamW(model.parameters(), lr=5e-5)
