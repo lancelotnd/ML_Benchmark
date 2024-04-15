@@ -24,7 +24,6 @@ class MNISTModel(nn.Module):
         return self.net(x)
 
 def demo_mnist_ddp(rank, world_size):
-    dist.init_process_group("nccl", rank=rank, world_size=world_size)
     print(f"Start running DDP example on rank {rank}.")
 
     # Set up the device
@@ -60,7 +59,7 @@ def demo_mnist_ddp(rank, world_size):
     dist.destroy_process_group()
 
 if __name__ == "__main__":
-    import sys
-    rank = int(sys.argv[1])
-    world_size = int(sys.argv[2])
+    dist.init_process_group("nccl")
+    rank = dist.get_rank()    
+    world_size = 2
     demo_mnist_ddp(rank, world_size)
