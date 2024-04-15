@@ -53,8 +53,8 @@ def train(rank, world_size):
 
 if __name__ == '__main__':
 
+    dist.init_process_group("nccl")
     rank = dist.get_rank()    
     world_size = dist.get_world_size()    
-    dist.init_process_group("nccl", rank=rank, world_size=world_size)
     train(rank, world_size=world_size)
     
