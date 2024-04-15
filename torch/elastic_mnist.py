@@ -50,6 +50,7 @@ def demo_mnist_ddp(rank, world_size):
     # Training loop
     ddp_model.train()
     for epoch in range(10):  
+        running_loss = 0.0
         for i, data in enumerate(data_loader,0):
             data, target = data[0].to(device_id), data[1].to(device_id)
             optimizer.zero_grad()
