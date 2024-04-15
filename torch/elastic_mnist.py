@@ -69,5 +69,5 @@ def demo_mnist_ddp(rank, world_size):
 if __name__ == "__main__":
     dist.init_process_group("nccl")
     rank = dist.get_rank()    
-    world_size = 2
+    world_size = dist.get_world_size()    
     demo_mnist_ddp(rank, world_size)
