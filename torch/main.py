@@ -36,7 +36,11 @@ class Net(nn.Module):
         x = torch.relu(self.fc2(x))
         return self.fc3(x)
 
-net = Net()
+
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+print("Training on:", device)
+
+net = Net().to(device)
 
 # Step 3: Loss Function and Optimizer
 criterion = nn.CrossEntropyLoss()
