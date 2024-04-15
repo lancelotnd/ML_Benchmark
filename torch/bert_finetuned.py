@@ -15,7 +15,6 @@ def cleanup():
     dist.destroy_process_group()
 
 def train(rank, world_size):
-    setup(rank, world_size)
 
     # Load tokenizer and model
     tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
@@ -53,6 +52,9 @@ def train(rank, world_size):
     cleanup()
 
 if __name__ == '__main__':
+
     rank = dist.get_rank()    
     world_size = dist.get_world_size()    
-    torch.multiprocessing.spawn(train, args=(world_size,), nprocs=world_size, join=True)
+    dist.init_process_group("nccl", rank=rank, world_size=world_size)
+    train(rank, world_size=world_size)
+    
