@@ -4,6 +4,8 @@ import torch.nn as nn
 import torch.optim as optim
 import torchvision
 import torchvision.transforms as transforms
+import torchvision.datasets as datasets
+
 
 from torch.nn.parallel import DistributedDataParallel as DDP
 from torch.utils.data import DataLoader, DistributedSampler
@@ -48,13 +50,17 @@ def demo_mnist_ddp(rank, world_size):
     # Training loop
     ddp_model.train()
     for epoch in range(10):  
-        for data, target in data_loader:
+        for i, data,target in enumerate(data_loader,0):
             data, target = data.to(device_id), target.to(device_id)
             optimizer.zero_grad()
             output = ddp_model(data)
             loss = loss_fn(output, target)
             loss.backward()
             optimizer.step()
+            running_loss += loss.item()
+            if i % 2000 == 1999:
+                print(f'[{epoch + 1}, {i + 1:5d}] loss: {running_loss / 2000:.3f}')
+                running_loss = 0.0
 
     dist.destroy_process_group()
 
