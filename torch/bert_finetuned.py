@@ -53,5 +53,6 @@ def train(rank, world_size):
     cleanup()
 
 if __name__ == '__main__':
-    world_size = torch.cuda.device_count()
+    rank = dist.get_rank()    
+    world_size = dist.get_world_size()    
     torch.multiprocessing.spawn(train, args=(world_size,), nprocs=world_size, join=True)
