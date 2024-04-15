@@ -4,13 +4,16 @@ import torch.distributed as dist
 import torch.multiprocessing as mp
 
 def run(rank,size):
-    """ Blocking point to point communication """
+    """ Non Blocking point to point communication """
     tensor = torch.zeros(1)
+    req = None
     if rank == 0:
         tensor += 1
-        dist.send(tensor=tensor, dst=1)
+        # Send to process one
+        req = dist.isend(tensor=tensor, dst=1)
     else:
-        dist.recv(tensor=tensor, src=0)
+        req = dist.irecv(tensor=tensor, src=0)
+    req.wait()
     print("Rank", rank, 'has data', tensor[0])
 
 
