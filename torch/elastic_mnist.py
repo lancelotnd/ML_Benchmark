@@ -50,7 +50,8 @@ def demo_mnist_ddp(rank, world_size):
     # Training loop
     ddp_model.train()
     for epoch in range(10):
-        print("epoch", epoch)  
+        if rank == 0:
+            print("epoch", epoch)  
         running_loss = 0.0
         for i, data in enumerate(data_loader,0):
             data, target = data[0].to(device_id), data[1].to(device_id)
@@ -60,9 +61,10 @@ def demo_mnist_ddp(rank, world_size):
             loss.backward()
             optimizer.step()
             running_loss += loss.item()
-            if i % 100 == 99:
-                print(f'[{epoch + 1}, {i + 1:5d}] loss: {running_loss / 2000:.3f}')
-                running_loss = 0.0
+            if rank == 0:
+                if i % 100 == 99:
+                    print(f'[{epoch + 1}, {i + 1:5d}] loss: {running_loss / 2000:.3f}')
+                    running_loss = 0.0
 
     dist.destroy_process_group()
 
