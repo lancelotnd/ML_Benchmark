@@ -4,8 +4,14 @@ import torch.distributed as dist
 import torch.multiprocessing as mp
 
 def run(rank,size):
-    """ Distributed function to be implemented later """
-    pass
+    """ Blocking point to point communication """
+    tensor = torch.zeros(1)
+    if rank == 0:
+        tensor += 1
+        dist.send(tensor=tensor, dst=1)
+    else:
+        dist.recv(tensor=tensor, src=0)
+    print("Rank", rank, 'has data', tensor[0])
 
 
 def init_process(rank, size, fn, backend='gloo'):
