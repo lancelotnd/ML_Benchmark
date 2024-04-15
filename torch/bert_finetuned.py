@@ -5,6 +5,8 @@ from datasets import load_dataset
 from torch.utils.data import DataLoader, DistributedSampler
 from torch.nn.parallel import DistributedDataParallel as DDP
 import torch.distributed as dist
+import torch.optim as optim
+
 import os
 
 def setup(rank, world_size):
