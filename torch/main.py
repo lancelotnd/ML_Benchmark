@@ -36,7 +36,6 @@ class Net(nn.Module):
         x = torch.relu(self.fc2(x))
         return self.fc3(x)
 
-
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 print("Training on:", device)
 
@@ -50,7 +49,7 @@ optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
 for epoch in range(2):  # loop over the dataset multiple times
     running_loss = 0.0
     for i, data in enumerate(train_loader, 0):
-        inputs, labels = data
+        inputs, labels = data[0].to(device), data[1].to(device)
         optimizer.zero_grad()
         outputs = net(inputs)
         loss = criterion(outputs, labels)
@@ -68,7 +67,7 @@ correct = 0
 total = 0
 with torch.no_grad():
     for data in test_loader:
-        images, labels = data
+        images, labels = data[0].to(device), data[1].to(device)
         outputs = net(images)
         _, predicted = torch.max(outputs.data, 1)
         total += labels.size(0)
