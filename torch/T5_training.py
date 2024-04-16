@@ -285,31 +285,31 @@ def fsdp_main(args):
     cleanup()
 
 
-    if __name__ == '__main__':
-        # Training settings
-        parser = argparse.ArgumentParser(description='PyTorch T5 FSDP Example')
-        parser.add_argument('--batch-size', type=int, default=4, metavar='N',
-                            help='input batch size for training (default: 64)')
-        parser.add_argument('--test-batch-size', type=int, default=4, metavar='N',
-                            help='input batch size for testing (default: 1000)')
-        parser.add_argument('--epochs', type=int, default=2, metavar='N',
-                            help='number of epochs to train (default: 3)')
-        parser.add_argument('--lr', type=float, default=.002, metavar='LR',
-                            help='learning rate (default: .002)')
-        parser.add_argument('--gamma', type=float, default=0.7, metavar='M',
-                            help='Learning rate step gamma (default: 0.7)')
-        parser.add_argument('--no-cuda', action='store_true', default=False,
-                            help='disables CUDA training')
-        parser.add_argument('--seed', type=int, default=1, metavar='S',
-                            help='random seed (default: 1)')
-        parser.add_argument('--track_memory', action='store_false', default=True,
-                            help='track the gpu memory')
-        parser.add_argument('--run_validation', action='store_false', default=True,
-                            help='running the validation')
-        parser.add_argument('--save-model', action='store_false', default=True,
-                            help='For Saving the current Model')
-        args = parser.parse_args()
+if __name__ == '__main__':
+    # Training settings
+    parser = argparse.ArgumentParser(description='PyTorch T5 FSDP Example')
+    parser.add_argument('--batch-size', type=int, default=4, metavar='N',
+                        help='input batch size for training (default: 64)')
+    parser.add_argument('--test-batch-size', type=int, default=4, metavar='N',
+                        help='input batch size for testing (default: 1000)')
+    parser.add_argument('--epochs', type=int, default=2, metavar='N',
+                        help='number of epochs to train (default: 3)')
+    parser.add_argument('--lr', type=float, default=.002, metavar='LR',
+                        help='learning rate (default: .002)')
+    parser.add_argument('--gamma', type=float, default=0.7, metavar='M',
+                        help='Learning rate step gamma (default: 0.7)')
+    parser.add_argument('--no-cuda', action='store_true', default=False,
+                        help='disables CUDA training')
+    parser.add_argument('--seed', type=int, default=1, metavar='S',
+                        help='random seed (default: 1)')
+    parser.add_argument('--track_memory', action='store_false', default=True,
+                        help='track the gpu memory')
+    parser.add_argument('--run_validation', action='store_false', default=True,
+                        help='running the validation')
+    parser.add_argument('--save-model', action='store_false', default=True,
+                        help='For Saving the current Model')
+    args = parser.parse_args()
 
-        torch.manual_seed(args.seed)
+    torch.manual_seed(args.seed)
 
-        fsdp_main(args)
+    fsdp_main(args)
