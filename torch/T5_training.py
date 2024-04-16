@@ -17,9 +17,7 @@ from transformers.models.t5.modeling_t5 import T5Block
 
 from torch.distributed.algorithms._checkpoint.checkpoint_wrapper import (
  checkpoint_wrapper,
- CheckpointImpl,
- apply_activation_checkpointing_wrapper)
-
+ CheckpointImpl)
 from torch.distributed.fsdp import (
     FullyShardedDataParallel as FSDP,
     MixedPrecision,
