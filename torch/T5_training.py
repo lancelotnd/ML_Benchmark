@@ -135,6 +135,7 @@ def validation(model, rank, world_size, val_loader):
     return val_loss
 
 def fsdp_main(args):
+    print("Made it to fsdp")
 
     model, tokenizer = setup_model("t5-base")
 
