@@ -41,6 +41,9 @@ import time
 import tqdm
 from datetime import datetime
 
+
+g_gigabyte = 1024**3
+
 """======================Sharding example============================="""
 
 def setup():
