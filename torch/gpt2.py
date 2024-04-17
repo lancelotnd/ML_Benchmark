@@ -13,7 +13,7 @@ tokenizer = GPT2Tokenizer.from_pretrained('gpt2')
 
 # Load and preprocess dataset
 dataset = load_dataset('openwebtext')
-dataset.set_format(type='torch', columns=['input_ids'])
+dataset.set_format(type='torch', columns=['text'])
 dataloader = DataLoader(dataset['train'], batch_size=4, shuffle=True)
 
 # Setup model
@@ -30,7 +30,7 @@ model.train()
 for epoch in range(3):
     for batch in dataloader:
         optimizer.zero_grad()
-        inputs = batch['input_ids'].to(torch.cuda.current_device())
+        inputs = batch['text'].to(torch.cuda.current_device())
         outputs = model(inputs, labels=inputs)
         loss = outputs.loss
         loss.backward()
