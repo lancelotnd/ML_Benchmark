@@ -10,7 +10,8 @@ from torch.optim import Adam
 # Initialization
 init_process_group(backend='nccl')
 tokenizer = GPT2Tokenizer.from_pretrained('gpt2')
-
+if tokenizer.pad_token is None:
+    tokenizer.pad_token = tokenizer.eos_token  # Set padding token
 
 def tokenize_function(examples):
     return tokenizer(examples['text'], padding="max_length", truncation=True, max_length=512)
@@ -20,7 +21,7 @@ dataset = load_dataset('openwebtext', trust_remote_code=True)
 dataset = dataset.map(tokenize_function,batched=True)
 dataset.set_format(type='torch', columns=['input_ids'])
 
-dataloader = DataLoader(dataset['train'], batch_size=4, shuffle=True)
+dataloader = DataLoader(dataset['train'], batch_size=4, shuffle=True, load_from_cache_file=True)
 
 # Setup model
 config = GPT2Config.from_pretrained('gpt2')
