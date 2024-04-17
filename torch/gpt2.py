@@ -12,7 +12,7 @@ init_process_group(backend='nccl')
 tokenizer = GPT2Tokenizer.from_pretrained('gpt2')
 
 # Load and preprocess dataset
-dataset = load_dataset('openwebtext')
+dataset = load_dataset('openwebtext', trust_remote_code=True)
 dataset.set_format(type='torch', columns=['text'])
 dataloader = DataLoader(dataset['train'], batch_size=4, shuffle=True)
 
