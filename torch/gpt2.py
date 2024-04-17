@@ -11,9 +11,15 @@ from torch.optim import Adam
 init_process_group(backend='nccl')
 tokenizer = GPT2Tokenizer.from_pretrained('gpt2')
 
+
+def tokenize_function(examples):
+    return tokenizer(examples['text'], padding="max_length", truncation=True, max_length=512)
+
 # Load and preprocess dataset
 dataset = load_dataset('openwebtext', trust_remote_code=True)
-dataset.set_format(type='torch', columns=['text'])
+dataset = dataset.map(tokenize_function,batched=True)
+dataset.set_format(type='torch', columns=['input_ids'])
+
 dataloader = DataLoader(dataset['train'], batch_size=4, shuffle=True)
 
 # Setup model
@@ -30,7 +36,7 @@ model.train()
 for epoch in range(3):
     for batch in dataloader:
         optimizer.zero_grad()
-        inputs = batch['text'].to(torch.cuda.current_device())
+        inputs = batch['input_ids'].to(torch.cuda.current_device())
         outputs = model(inputs, labels=inputs)
         loss = outputs.loss
         loss.backward()
